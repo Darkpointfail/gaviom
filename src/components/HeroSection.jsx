@@ -71,7 +71,7 @@ export default function HeroSection() {
           variants={container}
           initial="hidden"
           animate="show"
-          className="max-w-4xl"
+          className="max-w-4xl pt-11 max-md:pt-12"
         >
           <div className="font-display leading-[0.9] text-white">
             {titleLines.map((line, li) => (
