@@ -139,7 +139,7 @@ export const dictionary = {
       },
       {
         quote:
-          'Roadmap claire, livraisons toutes les deux semaines — rare dans l’IA.',
+          'Franchement au début je pensais que ça allait être un projet “IA” qui ne sort jamais. L’équipe a pris le temps de comprendre nos contraintes métier, et on a eu quelque chose d’utilisable assez vite, avec des points réguliers où on voyait vraiment avancer.',
         role: 'CTO · Fintech',
       },
       {
@@ -340,7 +340,7 @@ export const dictionary = {
       },
       {
         quote:
-          'Clear roadmap, deliveries every two weeks — rare in AI.',
+          'Honestly I expected another AI project that never ships. They actually dug into how we work, and we got something we could use without waiting forever, with weekly check-ins where you could see real progress, not just slides.',
         role: 'CTO · Fintech',
       },
       {
