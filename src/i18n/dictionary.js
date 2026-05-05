@@ -99,7 +99,7 @@ export const dictionary = {
     casesSection: {
       kicker: '// Réalisations',
       heading: 'Impact mesurable, pas du storytelling.',
-      viewCase: '→ Voir le cas client',
+      viewCase: '→ Découvrir vos solutions personnalisées',
     },
     cases: [
       {
@@ -300,7 +300,7 @@ export const dictionary = {
     casesSection: {
       kicker: '// Case studies',
       heading: 'Measured impact, not storytelling.',
-      viewCase: '→ View case study',
+      viewCase: '→ Discover your tailored solutions',
     },
     cases: [
       {

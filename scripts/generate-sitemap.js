@@ -7,6 +7,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const root = path.join(__dirname, '..')
 const postsRoot = path.join(root, 'src/blog/posts')
 const outPath = path.join(root, 'public/sitemap.xml')
+const robotsPath = path.join(root, 'public/robots.txt')
 const envPath = path.join(root, '.env')
 
 if (fs.existsSync(envPath)) {
@@ -74,6 +75,14 @@ ${postUrls}
 </urlset>
 `
 
+const robots = `User-agent: *
+Allow: /
+
+Sitemap: ${BASE_URL}/sitemap.xml
+`
+
 fs.mkdirSync(path.dirname(outPath), { recursive: true })
 fs.writeFileSync(outPath, sitemap, 'utf8')
+fs.writeFileSync(robotsPath, robots, 'utf8')
 console.log('sitemap.xml ->', outPath)
+console.log('robots.txt ->', robotsPath)

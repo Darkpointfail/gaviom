@@ -4,12 +4,14 @@ import {
   useMemo,
   useState,
 } from 'react'
+import { useLocation } from 'react-router-dom'
 import { LanguageContext } from './context.js'
 import { dictionary } from './dictionary.js'
 
 const STORAGE_KEY = 'axiom-lang'
 
 export function LanguageProvider({ children }) {
+  const { pathname } = useLocation()
   const [lang, setLangState] = useState(() => {
     if (typeof window === 'undefined') return 'fr'
     const saved = localStorage.getItem(STORAGE_KEY)
@@ -28,6 +30,9 @@ export function LanguageProvider({ children }) {
     document.documentElement.lang = lang === 'fr' ? 'fr' : 'en'
     localStorage.setItem(STORAGE_KEY, lang)
 
+    /** Accueil seulement : les pages blog / catégories gèrent title + description via SEOHead */
+    if (pathname !== '/') return
+
     const metaDescription =
       lang === 'fr'
         ? 'Automatisez vos opérations. Scalez votre business. GAVIOM — agents IA, automatisation et intégrations métier.'
@@ -36,7 +41,7 @@ export function LanguageProvider({ children }) {
     if (el) el.setAttribute('content', metaDescription)
 
     document.title = 'GAVIOM — AI Studio'
-  }, [lang])
+  }, [lang, pathname])
 
   const value = useMemo(
     () => ({
