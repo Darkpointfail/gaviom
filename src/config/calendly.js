@@ -53,15 +53,15 @@ export function getBookingLinkProps(fallbackHash = '/#contact') {
   const href = getBookingHref(fallbackHash)
   const external = href.startsWith('http')
   const onClick = external
-    ? () => {
-        // Reliable on production domains: keep analytics, open Calendly directly.
-        trackEvent(CALENDLY_TRACK_EVENT_CLICK, { source: 'cta', mode: 'direct_link' })
+    ? (e) => {
+        e.preventDefault()
+        openCalendlyBooking(href)
       }
     : undefined
 
   return {
     href,
     onClick,
-    ...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {}),
+    ...(external ? { rel: 'noopener noreferrer' } : {}),
   }
 }
