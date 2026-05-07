@@ -47,7 +47,9 @@ function loadCalendlyWidgetScript() {
 }
 
 function fallbackOpen(url) {
-  window.open(url, '_blank', 'noopener,noreferrer')
+  // Executed after async script load: popup opening may be blocked.
+  // Use same-tab navigation so "Book a call" always works in production.
+  window.location.assign(url)
 }
 
 export default function CalendlyModal() {
