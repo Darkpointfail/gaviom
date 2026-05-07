@@ -14,19 +14,30 @@ import {
 
 globalThis.Buffer = Buffer
 
+function shouldSkipForceTop() {
+  return (
+    window.location.pathname === '/' && window.location.hash.length > 1
+  )
+}
+
 /** Dès le bootstrap : pas de scroll restauré par le navigateur + forcage haut de page (Lenis lisait parfois un scroll résiduel). */
 if (typeof window !== 'undefined') {
   disableBrowserScrollRestore()
-  forceScrollTop()
+  if (!shouldSkipForceTop()) {
+    forceScrollTop()
+  }
 
   /** Après mise en cache / restauration d’état hors bfcache, le viewport peut encore sauter plus tard. */
   window.addEventListener('pageshow', (event) => {
     if (event.persisted) return
     disableBrowserScrollRestore()
-    forceScrollTop()
+    if (!shouldSkipForceTop()) {
+      forceScrollTop()
+    }
   })
 
   window.addEventListener('load', () => {
+    if (shouldSkipForceTop()) return
     forceScrollTop()
     requestAnimationFrame(() => {
       forceScrollTop()

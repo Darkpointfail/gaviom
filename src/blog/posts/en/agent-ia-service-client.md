@@ -40,4 +40,4 @@ When support handles billing disputes, align the knowledge base with workflows d
 
 ## Conclusion
 
-ROI hinges on **handling time** and **satisfaction** — measure them before expanding automation scope.
+ROI hinges on **handling time** and **satisfaction**, measure them before expanding automation scope.

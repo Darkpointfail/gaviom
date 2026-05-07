@@ -31,8 +31,8 @@ export default function BlogIndex() {
       />
 
       <section className="mx-auto max-w-7xl px-6 pb-16 pt-32">
-        <p className="mb-4 font-mono text-sm text-cyan">{copy.blog.kicker}</p>
-        <h1 className="mb-6 font-display text-6xl text-white md:text-7xl">
+        <p className="mb-4 font-mono text-sm text-accent">{copy.blog.kicker}</p>
+        <h1 className="mb-6 font-display text-6xl text-fg md:text-7xl">
           {copy.blog.indexTitle}
         </h1>
         <p className="font-body text-xl text-muted max-w-2xl">

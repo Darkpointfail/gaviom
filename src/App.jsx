@@ -9,9 +9,13 @@ import CalendlyModal from './components/CalendlyModal.jsx'
 
 function App() {
   return (
-    <div className="flex min-h-svh flex-col bg-bg text-white">
+    <div className="relative flex min-h-svh flex-col bg-bg text-fg">
+      <div
+        className="pointer-events-none fixed inset-0 z-0 opacity-[0.035] mix-blend-soft-light premium-grain"
+        aria-hidden
+      />
       <Navbar />
-      <div className="relative z-0 flex w-full flex-1 flex-col">
+      <div className="relative z-[1] flex w-full flex-1 flex-col">
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/blog" element={<BlogIndex />} />

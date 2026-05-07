@@ -33,7 +33,7 @@ export default function TableOfContents({ content }) {
 
   return (
     <nav aria-label={copy.blog.tocAria}>
-      <p className="mb-4 font-mono text-xs text-cyan">{copy.blog.tocLabel}</p>
+      <p className="mb-4 font-mono text-xs text-accent">{copy.blog.tocLabel}</p>
       <ul className="space-y-2 border-l border-border pl-4">
         {headings.map((h) => (
           <li
@@ -44,8 +44,8 @@ export default function TableOfContents({ content }) {
               href={`#${h.id}`}
               className={`font-body text-sm transition-colors duration-200 ${
                 active === h.id
-                  ? 'text-cyan'
-                  : 'text-muted hover:text-white'
+                  ? 'text-accent'
+                  : 'text-muted hover:text-fg'
               }`}
             >
               {h.text}

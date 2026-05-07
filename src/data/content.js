@@ -1,4 +1,5 @@
 export const site = {
   name: 'GAVIOM',
-  tagline: 'AI Studio',
+  advisory: 'Advisory',
+  tagline: 'Cabinet de conseil en transformation IA',
 }

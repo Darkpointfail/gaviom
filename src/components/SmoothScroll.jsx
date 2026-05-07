@@ -78,12 +78,17 @@ export default function SmoothScroll({ children }) {
     }
   }, [hash, useLenis, reducedMotion])
 
+  /** Ne pas écraser le scroll quand on arrive sur l’accueil avec une ancre (#services, etc.). */
   useLayoutEffect(() => {
     const lenis = lenisRef.current
+    const landWithHash = pathname === '/' && Boolean(hash?.length > 1)
+
     if (lenis) {
-      lenis.scrollTo(0, { immediate: true })
+      if (!landWithHash) {
+        lenis.scrollTo(0, { immediate: true })
+      }
       lenis.resize()
-    } else {
+    } else if (!landWithHash) {
       forceScrollTop()
     }
     const id = requestAnimationFrame(() => {
@@ -91,7 +96,7 @@ export default function SmoothScroll({ children }) {
       ScrollTrigger.refresh()
     })
     return () => cancelAnimationFrame(id)
-  }, [pathname])
+  }, [pathname, hash])
 
   /** Scroll natif : blog, préférences utilisateur, ou absence de Lenis */
   useEffect(() => {
@@ -151,7 +156,12 @@ export default function SmoothScroll({ children }) {
       return undefined
     }
 
-    forceScrollTop()
+    const landWithHashOnHome =
+      window.location.pathname === '/' && window.location.hash.length > 1
+
+    if (!landWithHashOnHome) {
+      forceScrollTop()
+    }
     if (performance.getEntriesByType('navigation')[0]?.type === 'reload') {
       ScrollTrigger.clearScrollMemory('manual', true)
     }
@@ -181,9 +191,21 @@ export default function SmoothScroll({ children }) {
     gsap.ticker.add(tickerCb)
     gsap.ticker.lagSmoothing(0)
 
-    lenis.scrollTo(0, { immediate: true })
+    if (!landWithHashOnHome) {
+      lenis.scrollTo(0, { immediate: true })
+    }
     lenis.resize()
     ScrollTrigger.refresh()
+
+    if (landWithHashOnHome) {
+      const anchor = window.location.hash.replace('#', '').split('?')[0]
+      const target = anchor ? document.getElementById(anchor) : null
+      if (target) {
+        requestAnimationFrame(() => {
+          lenis.scrollTo(target, { offset: -88, immediate: true })
+        })
+      }
+    }
 
     /** Contenu/fonts qui arrivent après : Lenis avait pu partir d’un scroll résiduel. */
     const isReload =
@@ -209,15 +231,29 @@ export default function SmoothScroll({ children }) {
     window.addEventListener('resize', onResize, { passive: true })
 
     const onClick = (e) => {
-      const a = e.target.closest?.('a[href^="#"]')
+      const a = e.target.closest?.('a[href]')
       if (!a) return
-      const id = a.getAttribute('href')
-      if (!id || id === '#') return
-      const el = document.querySelector(id)
-      if (el) {
-        e.preventDefault()
-        lenis.scrollTo(el, { offset: -88, duration: 0.85 })
-      }
+      const raw = a.getAttribute('href') || ''
+      if (raw === '#' || raw === '') return
+
+      const onHome = window.location.pathname === '/'
+      const handleHere =
+        raw.startsWith('#') || (raw.startsWith('/#') && onHome)
+      if (!handleHere) return
+
+      const hashId =
+        raw.startsWith('#') && raw.length > 1
+          ? raw.slice(1).split('?')[0]
+          : raw.startsWith('/#') && raw.length > 2
+            ? raw.slice(2).split('?')[0]
+            : ''
+      if (!hashId) return
+
+      const el = document.getElementById(hashId)
+      if (!el) return
+
+      e.preventDefault()
+      lenis.scrollTo(el, { offset: -88, duration: 0.85 })
     }
     document.addEventListener('click', onClick)
 

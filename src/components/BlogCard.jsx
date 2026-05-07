@@ -12,14 +12,14 @@ export default function BlogCard({ post }) {
   return (
     <Link to={`/blog/${post.slug}`} className="block h-full">
       <motion.article
-        whileHover={{ y: -4 }}
-        className="group flex h-full flex-col gap-4 rounded-xl border border-border bg-surface p-6 transition-all duration-300 hover:border-violet"
+        whileHover={{ y: -3 }}
+        className="group flex h-full flex-col gap-4 rounded-xl border border-border bg-surface p-6 shadow-lux-sm ring-1 ring-inset ring-white/[0.04] transition-all duration-300 hover:border-accent/50 hover:shadow-lux"
       >
-        <span className="w-fit rounded border border-cyan/30 px-2 py-1 font-mono text-xs text-cyan">
+        <span className="w-fit rounded border border-accent/30 px-2 py-1 font-mono text-xs text-accent">
           {post.category}
         </span>
 
-        <h2 className="font-display text-2xl leading-tight text-white transition-colors duration-200 group-hover:text-cyan">
+        <h2 className="font-display text-2xl leading-tight text-fg transition-colors duration-200 group-hover:text-accent">
           {post.title}
         </h2>
 

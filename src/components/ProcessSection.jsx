@@ -31,7 +31,6 @@ export default function ProcessSection() {
     }))
   }, [copy.process.steps])
 
-  /** Deux séries identiques → boucle sans saut après normalisation sur scrollWidth / 2. */
   const loop = useMemo(() => [...steps, ...steps], [steps])
 
   useEffect(() => {
@@ -145,7 +144,6 @@ export default function ProcessSection() {
       }
     }
 
-    /** En mode mouvements réduits : scroll natif (doigt/barre), on recolle la boucle. */
     const onScrollPassive = () => {
       normalizeLoop(rail)
     }
@@ -184,26 +182,24 @@ export default function ProcessSection() {
   return (
     <section
       id="process"
-      className="relative scroll-mt-24 bg-bg px-4 py-24 md:px-8"
+      className="relative scroll-mt-24 bg-bg px-4 py-28 md:px-8 md:py-32"
     >
-      <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[minmax(200px,280px)_1fr] lg:items-start lg:gap-12 xl:gap-16">
+      <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[minmax(200px,280px)_1fr] lg:items-start lg:gap-14 xl:gap-16">
         <header className="max-w-xl lg:sticky lg:top-28 lg:max-w-none lg:self-start">
-          <p className="font-mono text-xs uppercase tracking-[0.25em] text-violet">
-            {copy.process.kicker}
-          </p>
-          <h2 className="mt-4 font-display text-5xl text-white md:text-6xl">
+          <p className="font-mono text-xs tracking-label text-accent">{copy.process.kicker}</p>
+          <h2 className="mt-5 font-display text-4xl leading-[1.12] tracking-tight text-fg md:text-5xl">
             {copy.process.heading}
           </h2>
+          <p className="mt-6 font-body leading-relaxed text-muted">
+            {copy.process.lead}
+          </p>
           <p className="mt-6 hidden font-mono text-xs leading-relaxed text-muted lg:block">
             {copy.process.hint}
           </p>
         </header>
 
         <div className="relative min-w-0">
-          <div
-            className="relative process-marquee-wrap pb-4 pt-1"
-            data-lenis-prevent-wheel=""
-          >
+          <div className="relative process-marquee-wrap pb-4 pt-1">
             <div
               className="pointer-events-none absolute inset-y-0 left-0 z-10 w-8 bg-gradient-to-r from-bg to-transparent md:w-12"
               aria-hidden
@@ -229,10 +225,7 @@ export default function ProcessSection() {
                     role="listitem"
                     className="process-marquee-item w-[min(calc(100vw-3rem),420px)] shrink-0 sm:w-[400px]"
                   >
-                    <StepCard
-                      step={step}
-                      index={(i % steps.length) + 1}
-                    />
+                    <StepCard step={step} />
                   </div>
                 ))}
               </div>
@@ -244,9 +237,9 @@ export default function ProcessSection() {
   )
 }
 
-function StepCard({ step, index }) {
+function StepCard({ step }) {
   return (
-    <article className="relative flex h-full min-h-[460px] flex-col overflow-hidden rounded-2xl border border-border bg-surface shadow-[inset_0_1px_0_0_rgba(255,255,255,0.04)] sm:min-h-[480px]">
+    <article className="relative flex h-full min-h-[460px] flex-col overflow-hidden rounded-2xl border border-border bg-surface shadow-lux ring-1 ring-inset ring-white/[0.05] sm:min-h-[480px]">
       <div className="relative aspect-[16/11] w-full shrink-0 overflow-hidden bg-bg sm:aspect-[5/3]">
         <img
           src={step.image}
@@ -258,23 +251,21 @@ function StepCard({ step, index }) {
           decoding="async"
         />
         <div
-          className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#0D0D14] via-[#0D0D14]/35 to-transparent"
-          aria-hidden
-        />
-        <div
-          className="pointer-events-none absolute inset-0 bg-gradient-to-br from-cyan/15 via-transparent to-violet/20 opacity-80 mix-blend-soft-light"
+          className="pointer-events-none absolute inset-0 bg-gradient-to-t from-surface via-surface/30 to-transparent"
           aria-hidden
         />
       </div>
 
-      <div className="relative z-[1] flex flex-1 flex-col justify-end gap-3 px-6 pb-8 pt-6">
-        <span className="pointer-events-none absolute right-3 top-4 font-display text-[clamp(4rem,22vw,7rem)] leading-none text-white/[0.07] sm:right-5 sm:text-[5.5rem]">
-          {String(index).padStart(2, '0')}
+      <div className="relative flex flex-1 flex-col justify-end gap-2 px-6 pb-8 pt-6">
+        <span
+          className="pointer-events-none absolute bottom-20 right-3 font-display text-[clamp(4.5rem,20vw,9rem)] leading-none text-accent/10 sm:right-5"
+          aria-hidden
+        >
+          {step.number}
         </span>
-        <h3 className="font-display text-4xl tracking-wide text-white">
-          {step.title}
-        </h3>
-        <p className="font-body text-base leading-relaxed text-muted">
+        <span className="relative z-[1] font-display text-4xl text-accent">{step.letter}</span>
+        <h3 className="relative z-[1] font-display text-2xl text-fg">{step.name}</h3>
+        <p className="relative z-[1] font-body text-sm leading-relaxed text-muted">
           {step.description}
         </p>
       </div>

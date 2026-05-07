@@ -1,262 +1,162 @@
-import { useEffect, useState } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
-import { site } from '../data/content'
 import { useTranslation } from '../i18n/useTranslation.js'
 import { getBookingLinkProps } from '../config/calendly.js'
 
-const grainStyle = {
-  backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E")`,
+const fadeEase = [0.22, 1, 0.36, 1]
+
+function HeroStatGrid({ cards, ariaLabel, reduced }) {
+  if (!cards?.length) return null
+
+  return (
+    <div
+      className="grid w-full max-w-md grid-cols-2 gap-3 lg:justify-self-end"
+      aria-label={ariaLabel}
+      role="group"
+    >
+      {cards.map((card, index) => (
+        <motion.div
+          key={card.id}
+          initial={reduced ? false : { opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{
+            duration: reduced ? 0 : 0.4,
+            ease: fadeEase,
+            delay: reduced ? 0 : index * 0.08,
+          }}
+          className="flex flex-col gap-2 rounded-xl border border-white/10 bg-transparent p-4 sm:p-5"
+        >
+          <span className="font-display text-[clamp(1.5rem,3vw,2rem)] font-semibold leading-none tracking-tight text-white">
+            {card.value}
+          </span>
+          <span className="text-xs leading-snug text-white/40">{card.label}</span>
+        </motion.div>
+      ))}
+    </div>
+  )
 }
 
 export default function HeroSection() {
   const bookingLink = getBookingLinkProps()
   const { copy } = useTranslation()
-  const [typed, setTyped] = useState('')
   const reduced = useReducedMotion()
-
-  const subtitle = copy.hero.subtitle
-  const titleLines = copy.hero.titleLines
-
-  useEffect(() => {
-    if (reduced) return undefined
-    let i = 0
-    const id = window.setInterval(() => {
-      i += 1
-      setTyped(subtitle.slice(0, i))
-      if (i >= subtitle.length) window.clearInterval(id)
-    }, 42)
-    return () => window.clearInterval(id)
-  }, [subtitle, reduced])
+  const statCards = copy.hero.statCards ?? []
+  const statGridAria = copy.hero.statGridAria ?? ''
 
   const container = {
-    hidden: { opacity: 0 },
+    hidden: {},
     show: {
-      opacity: 1,
-      transition: { staggerChildren: reduced ? 0 : 0.12 },
+      transition: {
+        staggerChildren: reduced ? 0 : 0.08,
+        delayChildren: reduced ? 0 : 0.04,
+      },
     },
   }
 
   const item = {
-    hidden: { opacity: 0, y: reduced ? 0 : 60 },
-    show: { opacity: 1, y: 0, transition: { duration: 0.65, ease: [0.22, 1, 0.36, 1] } },
+    hidden: { opacity: 0, y: 20 },
+    show: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: reduced ? 0 : 0.45, ease: fadeEase },
+    },
   }
 
   return (
     <section
       id="hero"
-      className="relative min-h-[100svh] overflow-hidden bg-bg px-4 pb-16 pt-28 md:px-8 md:pb-24 md:pt-32"
+      className="relative min-h-[100svh] overflow-hidden bg-bg px-4 pb-20 pt-28 md:px-8 md:pb-28 md:pt-32"
     >
       <div
-        className="pointer-events-none absolute inset-0 z-0 opacity-[0.12]"
-        style={{ ...grainStyle, backgroundSize: '180px 180px' }}
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_85%_60%_at_50%_-10%,rgba(91,140,255,0.14),transparent_55%)]"
         aria-hidden
       />
-
-      <div className="absolute left-4 top-28 z-10 md:left-8 md:top-32">
-        <motion.div
-          initial={{ opacity: 0, x: -12 }}
-          animate={{ opacity: 1, x: 0 }}
-          className="inline-flex items-center gap-2 border border-border bg-surface/80 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.2em] text-muted md:text-xs"
-        >
-          <span
-            className="h-2 w-2 animate-pulse rounded-full bg-emerald-400"
-            aria-hidden
-          />
-          [ {site.name} {copy.hero.badgeSuffix} ]
-        </motion.div>
-      </div>
-
-      <div className="relative z-[1] mx-auto grid max-w-7xl items-center gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-12">
+      <div
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_50%_40%_at_100%_50%,rgba(91,140,255,0.06),transparent_60%)]"
+        aria-hidden
+      />
+      <div className="relative z-[1] mx-auto max-w-7xl">
         <motion.div
           variants={container}
           initial="hidden"
           animate="show"
-          className="max-w-4xl pt-11 max-md:pt-12"
+          className="mt-10 grid max-w-5xl grid-cols-1 gap-y-8 lg:mt-0 lg:grid-cols-[minmax(0,1fr)_minmax(260px,400px)] lg:gap-x-14 lg:gap-y-10 lg:items-start xl:max-w-none"
         >
-          <div className="font-display leading-[0.9] text-white">
-            {titleLines.map((line, li) => (
-              <div key={li} className="flex flex-wrap gap-x-4 gap-y-2">
-                {line.map((word, wi) => (
-                  <motion.span
-                    key={`${li}-${wi}-${word}`}
-                    variants={item}
-                    className="inline-block text-[clamp(2rem,7vw,7.75rem)] tracking-tight md:text-[clamp(2.35rem,8vw,9rem)]"
-                    style={{ willChange: 'transform, opacity' }}
-                  >
-                    {word}
-                  </motion.span>
-                ))}
-              </div>
-            ))}
-          </div>
+          <motion.span
+            variants={item}
+            className="inline-flex font-mono text-xs text-accent lg:col-span-2"
+          >
+            <span className="rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5 tracking-label shadow-lux-sm backdrop-blur-sm">
+              {copy.hero.eyebrow}
+            </span>
+          </motion.span>
+
+          <motion.h1
+            variants={item}
+            className="min-w-0 font-display text-[clamp(2.25rem,6vw,5.5rem)] leading-[1.02] tracking-[-0.02em] text-fg md:text-8xl lg:col-start-1 lg:max-w-[min(100%,42rem)] xl:max-w-[min(100%,46rem)]"
+          >
+            {copy.hero.titleLine1}
+            {copy.hero.titleLine2 ? (
+              <>
+                <br />
+                <span
+                  className={
+                    copy.hero.titleEmphasis ? undefined : 'text-accent not-italic'
+                  }
+                >
+                  {copy.hero.titleLine2}
+                </span>
+              </>
+            ) : null}
+            {copy.hero.titleEmphasis ? (
+              <>
+                <br />
+                <em className="text-accent not-italic">{copy.hero.titleEmphasis}</em>
+              </>
+            ) : null}
+          </motion.h1>
+
+          <motion.div
+            variants={item}
+            className="lg:col-start-2 lg:row-start-2 lg:justify-self-end lg:self-start"
+          >
+            <HeroStatGrid
+              cards={statCards}
+              ariaLabel={statGridAria}
+              reduced={reduced}
+            />
+          </motion.div>
 
           <motion.p
             variants={item}
-            className="mt-8 min-h-[1.5em] font-mono text-sm text-muted md:text-base"
+            className="max-w-xl font-body text-lg font-light leading-[1.65] text-muted lg:col-start-1 xl:max-w-2xl"
           >
-            {reduced ? subtitle : typed}
-            {!reduced && (
-              <span className="ml-1 inline-block h-4 w-px animate-pulse bg-cyan align-middle" />
-            )}
+            {copy.hero.subtitle}
           </motion.p>
 
           <motion.div
             variants={item}
-            className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center"
+            className="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center lg:col-start-1"
           >
             <motion.a
               {...bookingLink}
-              className="inline-flex items-center justify-center rounded border border-cyan bg-cyan/10 px-8 py-4 font-mono text-sm text-cyan transition hover:bg-cyan/20"
-              animate={
-                reduced
-                  ? undefined
-                  : { scale: [1, 1.03, 1] }
-              }
-              transition={
-                reduced
-                  ? undefined
-                  : { duration: 2.4, repeat: Infinity, ease: 'easeInOut' }
-              }
-              style={{ willChange: 'transform' }}
+              className="inline-flex items-center justify-center rounded-lg bg-accent px-7 py-3.5 font-body font-medium text-white shadow-lux-sm transition-all duration-300 hover:bg-[#4a7aef] hover:shadow-lux"
+              whileHover={reduced ? undefined : { y: -1 }}
             >
-              {copy.hero.ctaExpert}
+              {copy.hero.ctaPrimary}
             </motion.a>
             <a
-              href="#realisations"
-              className="font-mono text-sm text-white/70 underline-offset-4 hover:text-white hover:underline"
+              href="#services"
+              className="inline-flex items-center justify-center rounded-lg border border-white/15 bg-white/[0.02] px-7 py-3.5 font-body text-fg/90 backdrop-blur-sm transition-all duration-300 hover:border-accent/50 hover:bg-accent/10 hover:text-fg"
             >
-              {copy.hero.ctaWork}
+              {copy.hero.ctaSecondary}
             </a>
           </motion.div>
+
+          <motion.p variants={item} className="font-mono text-xs text-muted lg:col-start-1">
+            {copy.hero.reassurance}
+          </motion.p>
         </motion.div>
-
-        <HeroAiVisual reduced={reduced} />
       </div>
-
-      <motion.div
-        className="absolute bottom-8 left-1/2 z-10 hidden -translate-x-1/2 md:block"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1 }}
-      >
-        <div className="flex flex-col items-center gap-2 text-muted">
-          <motion.div
-            className="h-14 w-px origin-top bg-gradient-to-b from-cyan to-transparent"
-            initial={{ scaleY: 0 }}
-            animate={{ scaleY: reduced ? 1 : [0, 1, 0] }}
-            transition={
-              reduced
-                ? undefined
-                : { duration: 2, repeat: Infinity, ease: 'easeInOut' }
-            }
-          />
-        </div>
-      </motion.div>
     </section>
-  )
-}
-
-function HeroAiVisual({ reduced }) {
-  const { copy } = useTranslation()
-  const idle = !reduced
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, x: reduced ? 0 : 28 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.15 }}
-      className="relative mx-auto w-full max-w-lg lg:mx-0 lg:max-w-none"
-    >
-      <motion.div
-        className="relative aspect-[4/5] min-h-[280px] w-full overflow-hidden rounded-2xl border border-border/70 md:aspect-[3/4] md:min-h-0 lg:h-[min(72vh,620px)] lg:max-h-[620px]"
-        animate={
-          idle
-            ? {
-                y: [0, -12, 0],
-                boxShadow: [
-                  '0 0 70px -28px rgba(0,255,209,0.35)',
-                  '0 0 110px -18px rgba(155,92,255,0.42)',
-                  '0 0 70px -28px rgba(0,255,209,0.35)',
-                ],
-              }
-            : undefined
-        }
-        transition={{
-          y: { duration: 9, repeat: Infinity, ease: 'easeInOut' },
-          boxShadow: { duration: 7, repeat: Infinity, ease: 'easeInOut' },
-        }}
-        style={{ willChange: 'transform' }}
-      >
-        <div className="absolute inset-0 overflow-hidden rounded-2xl">
-          <motion.div
-            className="h-full w-full origin-center"
-            animate={
-              idle
-                ? { scale: [1.06, 1.14, 1.06], rotate: [0, 0.6, 0] }
-                : undefined
-            }
-            transition={{
-              duration: 18,
-              repeat: Infinity,
-              ease: 'easeInOut',
-            }}
-            style={{ willChange: 'transform' }}
-          >
-            <img
-              src="/hero-ai.png"
-              alt={copy.hero.visualAlt}
-              className="h-full w-full object-cover object-center"
-              width={900}
-              height={1125}
-              loading="eager"
-              decoding="async"
-              fetchPriority="high"
-            />
-          </motion.div>
-        </div>
-
-        <div
-          className="pointer-events-none absolute inset-0 overflow-hidden rounded-2xl"
-          aria-hidden
-        >
-          <motion.div
-            className="absolute inset-y-[-20%] left-0 w-[45%] rotate-[18deg] bg-gradient-to-r from-transparent via-cyan/25 to-transparent opacity-70 blur-md"
-            animate={idle ? { x: ['-60%', '220%'] } : undefined}
-            transition={{
-              duration: 5,
-              repeat: Infinity,
-              ease: 'linear',
-              repeatDelay: 2.2,
-            }}
-          />
-        </div>
-
-        <motion.div
-          className="pointer-events-none absolute inset-0 bg-gradient-to-t from-bg via-transparent to-transparent opacity-90 md:opacity-100"
-          aria-hidden
-          animate={idle ? { opacity: [0.82, 0.95, 0.82] } : undefined}
-          transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
-        />
-        <motion.div
-          className="pointer-events-none absolute inset-0 bg-gradient-to-br from-cyan/10 via-transparent to-violet/15"
-          aria-hidden
-          animate={
-            idle ? { opacity: [0.65, 1, 0.65] } : undefined
-          }
-          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
-        />
-        <div
-          className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-white/[0.06]"
-          aria-hidden
-        />
-      </motion.div>
-      <motion.p
-        className="mt-4 hidden font-mono text-[10px] uppercase tracking-[0.2em] text-muted lg:block"
-        animate={idle ? { opacity: [0.55, 1, 0.55] } : undefined}
-        transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-      >
-        {copy.hero.visualCaption}
-      </motion.p>
-    </motion.div>
   )
 }

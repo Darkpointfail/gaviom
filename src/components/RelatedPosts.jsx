@@ -9,7 +9,7 @@ export default function RelatedPosts({ currentPost }) {
 
   return (
     <section className="mt-20 border-t border-border pt-16">
-      <h2 className="mb-8 font-display text-3xl text-white md:text-4xl">
+      <h2 className="mb-8 font-display text-3xl text-fg md:text-4xl">
         {copy.blog.relatedTitle}
       </h2>
       <ul className="grid gap-6 md:grid-cols-3">
@@ -17,12 +17,12 @@ export default function RelatedPosts({ currentPost }) {
           <li key={p.slug}>
             <Link
               to={`/blog/${p.slug}`}
-              className="group block rounded-xl border border-border bg-surface/80 p-5 transition hover:border-violet"
+              className="group block rounded-xl border border-border bg-surface/80 p-5 transition hover:border-accent"
             >
-              <span className="font-mono text-[10px] uppercase tracking-wider text-cyan">
+              <span className="font-mono text-[10px] uppercase tracking-wider text-accent">
                 {p.category}
               </span>
-              <h3 className="mt-2 font-display text-xl text-white transition group-hover:text-cyan">
+              <h3 className="mt-2 font-display text-xl text-fg transition group-hover:text-accent">
                 {p.title}
               </h3>
               <p className="mt-2 line-clamp-2 font-body text-sm text-muted">

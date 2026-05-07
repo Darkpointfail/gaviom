@@ -1,43 +1,35 @@
-/** Chemins fichiers & métriques — textes dans src/i18n/dictionary.js */
-
-export const serviceAssets = [
-  { id: '01', icon: 'bolt' },
-  { id: '02', icon: 'link' },
-  { id: '03', icon: 'brain' },
-  { id: '04', icon: 'chart' },
-  { id: '05', icon: 'shield' },
-  { id: '06', icon: 'rocket' },
-]
+/** Chemins fichiers & métriques, textes dans src/i18n/dictionary.js */
 
 export const processAssets = [
-  { key: 'audit', image: '/process-audit.png' },
-  { key: 'design', image: '/process-design.png' },
-  { key: 'build', image: '/process-build.png' },
-  { key: 'scale', image: '/process-scale.png' },
+  { key: 'g', image: '/process-audit.png' },
+  { key: 'a', image: '/process-design.png' },
+  { key: 'v', image: '/process-build.png' },
+  { key: 'i', image: '/process-scale.png' },
+  { key: 'o', image: '/process-audit.png' },
+  { key: 'm', image: '/process-design.png' },
 ]
 
 export const caseAssets = [
   {
-    key: 'industry',
-    metricValue: 340,
-    metricSuffix: '%',
-    gradient: 'from-cyan/30 via-violet/40 to-bg',
+    key: 'vet-paris',
+    gradient: 'from-accent/20 via-accent/10 to-surface',
     image: '/case-industry.png',
-    metricSign: 'positive',
   },
   {
-    key: 'finance',
-    metricValue: 78,
-    metricSuffix: '%',
-    gradient: 'from-violet/35 via-cyan/25 to-bg',
+    key: 'sme-logistics',
+    gradient: 'from-emerald-500/15 via-accent/10 to-surface',
     image: '/case-finance.png',
-    metricSign: 'negative',
+  },
+  {
+    key: 'solo-consultant',
+    gradient: 'from-violet-500/15 via-accent/10 to-surface',
+    image: '/case-industry.png',
   },
 ]
 
 export const testimonialAssets = [
+  { initials: 'DM', author: 'Dr Martin' },
   { initials: 'PG', author: 'Patrick G.' },
   { initials: 'IM', author: 'Isabelle M.' },
   { initials: 'SL', author: 'Sarah L.' },
-  { initials: 'JM', author: 'Julien M.' },
 ]

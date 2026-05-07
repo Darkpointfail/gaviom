@@ -45,11 +45,11 @@ export default function BlogPost() {
   if (!post) {
     return (
       <div className="mx-auto max-w-3xl px-6 py-40 text-center">
-        <h1 className="font-display text-4xl text-white">{copy.blog.notFoundTitle}</h1>
+        <h1 className="font-display text-4xl text-fg">{copy.blog.notFoundTitle}</h1>
         <p className="mt-4 text-muted">{copy.blog.notFoundBody}</p>
         <Link
           to="/blog"
-          className="mt-8 inline-block font-mono text-cyan hover:underline"
+          className="mt-8 inline-block font-mono text-accent hover:underline"
         >
           {copy.blog.backToBlog}
         </Link>
@@ -119,10 +119,10 @@ export default function BlogPost() {
       >
         <main>
           <header className="mb-12">
-            <span className="inline-block rounded border border-cyan/30 px-2 py-1 font-mono text-xs text-cyan">
+            <span className="inline-block rounded border border-accent/30 px-2 py-1 font-mono text-xs text-accent">
               {post.category}
             </span>
-            <h1 className="mt-6 mb-6 font-display text-5xl leading-none text-white md:text-7xl">
+            <h1 className="mt-6 mb-6 font-display text-5xl leading-none text-fg md:text-7xl">
               {post.title}
             </h1>
             <p className="mb-8 font-body text-xl text-muted">{post.description}</p>
@@ -156,7 +156,7 @@ export default function BlogPost() {
           <p className="mt-12">
             <Link
               to="/blog"
-              className="font-mono text-sm text-cyan hover:underline"
+              className="font-mono text-sm text-accent hover:underline"
             >
               {copy.blog.allArticles}
             </Link>

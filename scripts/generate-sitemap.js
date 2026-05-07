@@ -20,12 +20,12 @@ if (fs.existsSync(envPath)) {
   }
 }
 
-const BASE_URL = (process.env.VITE_SITE_URL || 'https://axiom.ai').replace(
+const BASE_URL = (process.env.VITE_SITE_URL || 'https://gaviom.com').replace(
   /\/$/,
   '',
 )
 
-/** Chemins des .md sous posts/fr et posts/en — une entrée sitemap par slug unique */
+/** Chemins des .md sous posts/fr et posts/en, une entrée sitemap par slug unique */
 function collectMarkdownPaths() {
   const out = []
   if (!fs.existsSync(postsRoot)) return out

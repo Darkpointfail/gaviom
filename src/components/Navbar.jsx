@@ -22,10 +22,11 @@ export default function Navbar() {
 
   const SECTION_LINKS = useMemo(
     () => [
-      { id: 'services', label: copy.nav.services, to: '/#services' },
-      { id: 'process', label: copy.nav.process, to: '/#process' },
-      { id: 'realisations', label: copy.nav.work, to: '/#realisations' },
-      { id: 'contact', label: copy.nav.contact, to: '/#contact' },
+      { id: 'services', label: copy.nav.services },
+      { id: 'process', label: copy.nav.process },
+      { id: 'realisations', label: copy.nav.work },
+      { id: 'formations', label: copy.nav.formations },
+      { id: 'contact', label: copy.nav.contact },
     ],
     [copy.nav],
   )
@@ -57,13 +58,15 @@ export default function Navbar() {
       initial={{ opacity: 0, y: -16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className={`fixed inset-x-0 top-0 z-50 border-b transition-colors duration-300 ${
-        scrolled ? 'border-border bg-[rgba(5,5,8,0.85)]' : 'border-transparent bg-[rgba(5,5,8,0.65)]'
-      } backdrop-blur-xl`}
+      className={`fixed inset-x-0 top-0 z-50 border-b transition-colors duration-500 ${
+        scrolled
+          ? 'border-white/[0.08] bg-bg/80 shadow-lux-sm'
+          : 'border-white/[0.05] bg-bg/65'
+      } backdrop-blur-2xl backdrop-saturate-150`}
       style={{ willChange: 'transform' }}
     >
       <div
-        className="pointer-events-none absolute bottom-0 left-0 h-px origin-left bg-cyan/80"
+        className="pointer-events-none absolute bottom-0 left-0 h-px origin-left bg-accent/80"
         style={{
           transform: `scaleX(${scrollProgress})`,
           width: '100%',
@@ -72,44 +75,49 @@ export default function Navbar() {
         aria-hidden
       />
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-4 md:gap-6 md:px-8">
-        <Link
-          to="/"
-          className="shrink-0 font-display text-2xl tracking-wide text-white md:text-3xl"
-        >
-          {site.name}
-          <span
-            className="ml-1 inline-block h-2 w-2 animate-pulse rounded-full bg-cyan align-middle"
-            aria-hidden
-          />
+        <Link to="/" className="shrink-0 flex items-baseline gap-1 md:gap-1.5">
+          <span className="font-display text-xl tracking-tight text-fg md:text-2xl">
+            {site.name}
+          </span>
+          <span className="font-body text-sm font-light text-muted">{site.advisory}</span>
         </Link>
 
         <nav
-          className="hidden items-center gap-6 md:flex lg:gap-8"
+          className="hidden items-center gap-5 md:flex lg:gap-7"
           aria-label={copy.nav.ariaNav}
         >
-          {SECTION_LINKS.map((link) => (
-            <Link
-              key={link.id}
-              to={link.to}
-              className="group relative font-body text-sm font-medium text-white/90"
-            >
-              {link.label}
-              <span
-                className={`absolute -bottom-1 left-0 h-[2px] origin-left bg-cyan transition-all duration-300 ${
-                  isHome && activeSection === link.id
-                    ? 'w-full'
-                    : 'w-0 group-hover:w-full'
-                }`}
-              />
-            </Link>
-          ))}
+          {SECTION_LINKS.map((link) =>
+            isHome ? (
+              <a
+                key={link.id}
+                href={`#${link.id}`}
+                className="group relative font-body text-sm font-medium text-fg/90"
+              >
+                {link.label}
+                <span
+                  className={`absolute -bottom-1 left-0 h-[2px] origin-left bg-accent transition-all duration-300 ${
+                    activeSection === link.id ? 'w-full' : 'w-0 group-hover:w-full'
+                  }`}
+                />
+              </a>
+            ) : (
+              <Link
+                key={link.id}
+                to={{ pathname: '/', hash: link.id }}
+                className="group relative font-body text-sm font-medium text-fg/90"
+              >
+                {link.label}
+                <span className="absolute -bottom-1 left-0 h-[2px] w-0 origin-left bg-accent transition-all duration-300 group-hover:w-full" />
+              </Link>
+            ),
+          )}
           <Link
             to="/blog"
-            className="group relative font-body text-sm font-medium text-white/90"
+            className="group relative font-body text-sm font-medium text-fg/90"
           >
             {copy.nav.blog}
             <span
-              className={`absolute -bottom-1 left-0 h-[2px] origin-left bg-cyan transition-all duration-300 ${
+              className={`absolute -bottom-1 left-0 h-[2px] origin-left bg-accent transition-all duration-300 ${
                 isBlog ? 'w-full' : 'w-0 group-hover:w-full'
               }`}
             />
@@ -120,7 +128,7 @@ export default function Navbar() {
           <LanguageToggle />
           <a
             {...bookingLink}
-            className="rounded border border-cyan px-3 py-2 font-mono text-[10px] uppercase tracking-wider text-cyan transition hover:bg-cyan/10 md:px-4 md:text-sm"
+            className="rounded-lg border border-accent/80 bg-accent px-3 py-2 font-body text-[10px] font-medium uppercase tracking-wider text-white shadow-lux-sm transition hover:bg-[#4a7aef] hover:shadow-lux md:px-4 md:text-sm md:normal-case md:tracking-normal"
           >
             {copy.nav.cta}
           </a>

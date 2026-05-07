@@ -161,7 +161,7 @@ export default function CalendlyModal() {
           <motion.div
             role="dialog"
             aria-modal="true"
-            className="relative z-[1] h-[88svh] w-full max-w-6xl overflow-hidden rounded-2xl border border-border bg-surface shadow-[0_20px_120px_rgba(0,255,209,0.12)] md:h-[84svh]"
+            className="relative z-[1] h-[88svh] w-full max-w-6xl overflow-hidden rounded-2xl border border-border bg-surface shadow-[0_20px_120px_rgba(26,79,191,0.15)] md:h-[84svh]"
             initial={{ opacity: 0, scale: 0.96, y: 10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.97, y: 8 }}
@@ -170,12 +170,12 @@ export default function CalendlyModal() {
             <button
               type="button"
               onClick={() => setIsOpen(false)}
-              className="absolute right-3 top-3 z-[2] rounded border border-border bg-bg/80 px-3 py-1 font-mono text-xs text-muted transition hover:border-cyan/60 hover:text-white"
+              className="absolute right-3 top-3 z-[2] rounded border border-border bg-bg/95 px-3 py-1 font-mono text-xs text-muted transition hover:border-accent/60 hover:text-fg"
             >
               Fermer
             </button>
 
-            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_0%,rgba(0,255,209,0.08),transparent_45%),radial-gradient(circle_at_80%_100%,rgba(155,92,255,0.12),transparent_55%)]" />
+            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_0%,rgba(26,79,191,0.08),transparent_45%),radial-gradient(circle_at_80%_100%,rgba(26,79,191,0.1),transparent_55%)]" />
 
             <div
               ref={containerRef}

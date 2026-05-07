@@ -2,5 +2,9 @@
 export const SITE_URL = (
   typeof import.meta.env.VITE_SITE_URL === 'string'
     ? import.meta.env.VITE_SITE_URL
-    : 'https://axiom.ai'
+    : 'https://gaviom.com'
 ).replace(/\/$/, '')
+
+export const CONTACT_EMAIL = 'info@gaviom.com'
+
+export const LINKEDIN_URL = 'https://www.linkedin.com/company/gaviom'

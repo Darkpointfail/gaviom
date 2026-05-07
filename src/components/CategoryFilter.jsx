@@ -12,8 +12,8 @@ export default function CategoryFilter({ categories }) {
         to="/blog"
         className={`rounded-full border px-4 py-1.5 font-mono text-xs transition ${
           !onCategoryPage
-            ? 'border-cyan bg-cyan/10 text-cyan'
-            : 'border-border text-muted hover:border-cyan/50 hover:text-white'
+            ? 'border-accent bg-accent-soft text-accent'
+            : 'border-border text-muted hover:border-accent/50 hover:text-fg'
         }`}
       >
         {copy.blog.filterAll}
@@ -27,8 +27,8 @@ export default function CategoryFilter({ categories }) {
             to={href}
             className={`rounded-full border px-4 py-1.5 font-mono text-xs transition ${
               active
-                ? 'border-cyan bg-cyan/10 text-cyan'
-                : 'border-border text-muted hover:border-cyan/50 hover:text-white'
+                ? 'border-accent bg-accent-soft text-accent'
+                : 'border-border text-muted hover:border-accent/50 hover:text-fg'
             }`}
           >
             {cat}

@@ -1,126 +1,157 @@
-import { useCallback, useMemo, useState } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
-import { serviceAssets } from '../data/assets.js'
 import { useTranslation } from '../i18n/useTranslation.js'
 
-function ServiceIcon({ name }) {
-  const common = 'h-6 w-6 text-cyan'
-  switch (name) {
-    case 'bolt':
-      return (
-        <svg className={common} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden>
-          <path d="M13 2L4 14h7l-1 8 10-14h-7l0-6z" strokeLinejoin="round" />
-        </svg>
-      )
-    case 'link':
-      return (
-        <svg className={common} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden>
-          <path d="M10 13a5 5 0 010-7l1-1a5 5 0 017 7l-1 1M14 11a5 5 0 010 7l-1 1a5 5 0 01-7-7l1-1" strokeLinecap="round" />
-        </svg>
-      )
-    case 'brain':
-      return (
-        <svg className={common} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden>
-          <path d="M12 5c-1.5-2-4-2-5 0-1 2 0 4 2 5M12 5c1.5-2 4-2 5 0 1 2 0 4-2 5M12 5v14M9 19c-3 0-5-2-4-5M15 19c3 0 5-2 4-5" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      )
-    case 'chart':
-      return (
-        <svg className={common} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden>
-          <path d="M4 19h16M7 15v4M12 11v8M17 7v12" strokeLinecap="round" />
-        </svg>
-      )
-    case 'shield':
-      return (
-        <svg className={common} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden>
-          <path d="M12 3l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V7l8-4z" strokeLinejoin="round" />
-        </svg>
-      )
-    case 'rocket':
-      return (
-        <svg className={common} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden>
-          <path d="M12 3s4 4 4 9a4 4 0 11-8 0c0-5 4-9 4-9zM12 14v3M9 21h6" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      )
-    default:
-      return null
-  }
-}
-
-function ServiceCard({ service, index }) {
-  const [pos, setPos] = useState({ x: 50, y: 50 })
-  const reduced = useReducedMotion()
-
-  const onMove = useCallback((e) => {
-    const rect = e.currentTarget.getBoundingClientRect()
-    const x = ((e.clientX - rect.left) / rect.width) * 100
-    const y = ((e.clientY - rect.top) / rect.height) * 100
-    setPos({ x, y })
-  }, [])
-
-  return (
-    <motion.article
-      initial={{ opacity: reduced ? 1 : 0, y: reduced ? 0 : 28 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-10%' }}
-      transition={{ duration: 0.55, delay: reduced ? 0 : index * 0.08 }}
-      className="group relative overflow-hidden rounded-xl border border-border bg-surface p-6 md:p-8"
-      style={{
-        '--mouse-x': `${pos.x}%`,
-        '--mouse-y': `${pos.y}%`,
-      }}
-      onMouseMove={onMove}
-    >
-      <div
-        className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-        style={{
-          background:
-            'radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), rgba(0,255,209,0.08), transparent 40%), radial-gradient(400px circle at var(--mouse-x) var(--mouse-y), rgba(155,92,255,0.12), transparent 45%)',
-        }}
-      />
-      <span className="font-mono text-5xl text-violet/30">{service.id}</span>
-      <div className="relative mt-4 flex flex-col gap-4">
-        <div className="flex items-center gap-3">
-          <ServiceIcon name={service.icon} />
-          <h3 className="font-display text-2xl tracking-wide text-white md:text-3xl">
-            {service.title}
-          </h3>
-        </div>
-        <p className="font-body text-sm leading-relaxed text-muted md:text-base">
-          {service.description}
-        </p>
-      </div>
-    </motion.article>
-  )
-}
+const fadeEase = [0.22, 1, 0.36, 1]
 
 export default function ServicesSection() {
   const { copy } = useTranslation()
-
-  const services = useMemo(() => {
-    return serviceAssets.map((a, i) => ({
-      ...a,
-      ...copy.services.items[i],
-    }))
-  }, [copy.services.items])
+  const reduced = useReducedMotion()
+  const { services: s } = copy
 
   return (
     <section
       id="services"
-      className="relative scroll-mt-24 bg-bg px-4 py-24 md:px-8"
+      className="relative scroll-mt-24 bg-bg px-4 py-28 md:px-8 md:py-32"
     >
       <div className="mx-auto max-w-7xl">
-        <p className="font-mono text-xs uppercase tracking-[0.25em] text-cyan">
-          {copy.services.kicker}
-        </p>
-        <h2 className="mt-4 max-w-3xl font-display text-5xl text-white md:text-6xl">
-          {copy.services.heading}
+        <p className="font-mono text-xs tracking-label text-accent">{s.kicker}</p>
+        <h2 className="mt-5 font-display text-4xl leading-[1.12] tracking-tight text-fg md:text-5xl">
+          {s.heading}
+          <br />
+          {s.headingLine2}
         </h2>
-        <div className="mt-16 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {services.map((s, i) => (
-            <ServiceCard key={s.id} service={s} index={i} />
+        <p className="mt-6 max-w-3xl font-body text-lg font-light leading-relaxed text-muted">
+          {s.intro}
+        </p>
+
+        <div className="mt-12 grid gap-4 sm:grid-cols-3">
+          {s.audiences.map((a, i) => (
+            <motion.div
+              key={a.title}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: reduced ? 0 : 0.45,
+                ease: fadeEase,
+                delay: reduced ? 0 : i * 0.06,
+              }}
+              viewport={{ once: true, margin: '-40px' }}
+              className="rounded-xl border border-border bg-surface/80 p-5 shadow-lux-sm ring-1 ring-inset ring-white/[0.04]"
+            >
+              <p className="font-display text-lg text-fg">{a.title}</p>
+              <p className="mt-2 font-body text-sm leading-relaxed text-muted">
+                {a.description}
+              </p>
+            </motion.div>
           ))}
         </div>
+
+        <div
+          className={`mt-16 grid gap-8 ${s.cards.length === 2 ? 'mx-auto max-w-5xl lg:grid-cols-2' : 'lg:grid-cols-3'}`}
+        >
+          {s.cards.map((card, index) => (
+            <motion.article
+              key={card.step}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: reduced ? 0 : 0.45,
+                ease: fadeEase,
+                delay: reduced ? 0 : index * 0.08,
+              }}
+              viewport={{ once: true, margin: '-50px' }}
+              whileHover={reduced ? undefined : { y: -3, transition: { duration: 0.2 } }}
+              className={`flex flex-col rounded-2xl border bg-surface p-8 shadow-lux ring-1 ring-inset ring-white/[0.05] ${
+                card.highlighted
+                  ? 'border-accent/40 bg-accent-soft'
+                  : 'border-border'
+              }`}
+            >
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="font-mono text-[10px] font-medium uppercase tracking-label text-muted">
+                  {card.step}
+                </span>
+                {card.badge ? (
+                  <span
+                    className={`rounded-full px-2.5 py-0.5 font-mono text-[10px] font-medium uppercase tracking-wider ${
+                      card.badge === 'Gratuit' || card.badge === 'Free'
+                        ? 'bg-emerald-500/15 text-emerald-400'
+                        : 'bg-accent/20 text-accent'
+                    }`}
+                  >
+                    {card.badge}
+                  </span>
+                ) : null}
+              </div>
+              <h3 className="mt-4 font-display text-xl leading-snug text-fg md:text-2xl">
+                {card.title}
+              </h3>
+              <p className="mt-4 flex-1 font-body text-sm leading-relaxed text-muted md:text-base">
+                {card.description}
+              </p>
+              <div className="mt-4 flex flex-wrap gap-2">
+                {card.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="rounded-md border border-border bg-bg/50 px-2 py-1 font-mono text-[10px] text-muted"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+              <ul className="mt-6 flex flex-col gap-2 border-t border-border pt-6">
+                {card.includes.map((line) => (
+                  <li key={line} className="flex gap-2 font-body text-sm text-fg">
+                    <span className="text-accent" aria-hidden>
+                      ·
+                    </span>
+                    <span>{line}</span>
+                  </li>
+                ))}
+              </ul>
+              {card.footnote ? (
+                <p className="mt-5 font-body text-sm italic leading-relaxed text-muted">
+                  {card.footnote}
+                </p>
+              ) : null}
+              {card.reassurance ? (
+                <p className="mt-3 font-mono text-xs text-accent">{card.reassurance}</p>
+              ) : null}
+              {card.priceFrom ? (
+                <p className="mt-5 border-t border-border pt-5 font-display text-lg text-fg">
+                  {card.priceFrom}
+                </p>
+              ) : null}
+              {card.priceNote ? (
+                <p className="mt-2 font-body text-xs leading-relaxed text-muted">{card.priceNote}</p>
+              ) : null}
+            </motion.article>
+          ))}
+        </div>
+
+        {s.formationTeaser ? (
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: reduced ? 0 : 0.45, ease: fadeEase }}
+            viewport={{ once: true, margin: '-40px' }}
+            className="mx-auto mt-14 max-w-3xl rounded-2xl border border-border bg-surface/60 p-8 text-center shadow-lux-sm ring-1 ring-inset ring-white/[0.04]"
+          >
+            <p className="font-mono text-[10px] font-medium uppercase tracking-label text-accent">
+              {s.formationTeaser.kicker}
+            </p>
+            <h3 className="mt-3 font-display text-xl text-fg md:text-2xl">{s.formationTeaser.title}</h3>
+            <p className="mt-3 font-body text-sm leading-relaxed text-muted md:text-base">
+              {s.formationTeaser.body}
+            </p>
+            <a
+              href={s.formationTeaser.href}
+              className="mt-6 inline-flex font-mono text-sm text-accent hover:underline"
+            >
+              {s.formationTeaser.cta}
+            </a>
+          </motion.div>
+        ) : null}
       </div>
     </section>
   )

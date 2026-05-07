@@ -38,13 +38,13 @@ export default function BlogCategory() {
       />
 
       <section className="mx-auto max-w-7xl px-6 pb-8 pt-32">
-        <p className="mb-4 font-mono text-sm text-cyan">
+        <p className="mb-4 font-mono text-sm text-accent">
           <Link to="/blog" className="hover:underline">
             {copy.blog.breadcrumbBlog}
           </Link>{' '}
           / {decoded}
         </p>
-        <h1 className="font-display text-5xl text-white md:text-6xl">{decoded}</h1>
+        <h1 className="font-display text-5xl text-fg md:text-6xl">{decoded}</h1>
         <p className="mt-4 max-w-2xl font-body text-muted">{categoryCountLabel}</p>
       </section>
 
@@ -54,9 +54,9 @@ export default function BlogCategory() {
         {posts.map((post, i) => (
           <motion.div
             key={post.slug}
-            initial={{ opacity: 0, y: 24 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.06 }}
+            transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1], delay: i * 0.08 }}
           >
             <BlogCard post={post} />
           </motion.div>
@@ -66,7 +66,7 @@ export default function BlogCategory() {
       {posts.length === 0 && (
         <p className="mx-auto max-w-7xl px-6 pb-32 text-center text-muted">
           {copy.blog.categoryEmpty}{' '}
-          <Link to="/blog" className="text-cyan hover:underline">
+          <Link to="/blog" className="text-accent hover:underline">
             {copy.blog.categoryBack}
           </Link>
         </p>

@@ -40,4 +40,4 @@ Quand le support traite des litiges liés à la facturation, alignez la base de 
 
 ## Conclusion
 
-Le ROI se joue sur la **réduction du temps de traitement** et la **satisfaction** — mesurez-les avant d’élargir le périmètre automatisé.
+Le ROI se joue sur la **réduction du temps de traitement** et la **satisfaction**, mesurez-les avant d’élargir le périmètre automatisé.

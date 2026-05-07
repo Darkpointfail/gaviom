@@ -5,7 +5,7 @@ export default function LanguageToggle() {
 
   return (
     <div
-      className="flex items-center gap-0.5 rounded border border-border/80 bg-bg/60 px-1 py-1 font-mono text-[10px] uppercase tracking-wider backdrop-blur-sm md:text-xs"
+      className="flex items-center gap-0.5 rounded border border-border bg-surface px-1 py-1 font-mono text-[10px] uppercase tracking-wider md:text-xs"
       role="group"
       aria-label={copy.lang.aria}
     >
@@ -14,8 +14,8 @@ export default function LanguageToggle() {
         onClick={() => setLang('fr')}
         className={`rounded px-2 py-1 transition md:px-2.5 ${
           lang === 'fr'
-            ? 'bg-cyan/15 text-cyan'
-            : 'text-muted hover:text-white'
+            ? 'bg-accent-soft text-accent'
+            : 'text-muted hover:text-fg'
         }`}
       >
         {copy.lang.fr}
@@ -25,8 +25,8 @@ export default function LanguageToggle() {
         onClick={() => setLang('en')}
         className={`rounded px-2 py-1 transition md:px-2.5 ${
           lang === 'en'
-            ? 'bg-cyan/15 text-cyan'
-            : 'text-muted hover:text-white'
+            ? 'bg-accent-soft text-accent'
+            : 'text-muted hover:text-fg'
         }`}
       >
         {copy.lang.en}
