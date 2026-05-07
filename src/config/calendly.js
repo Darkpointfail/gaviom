@@ -1,8 +1,18 @@
 /** URL complète de votre page ou événement Calendly (ex. https://calendly.com/votre-org/appel-decouverte) */
-export const CALENDLY_BOOKING_URL =
-  typeof import.meta.env.VITE_CALENDLY_URL === 'string'
-    ? import.meta.env.VITE_CALENDLY_URL.trim()
-    : ''
+function normalizeCalendlyUrl(raw) {
+  if (typeof raw !== 'string') return ''
+  const value = raw.trim()
+  if (!value) return ''
+  if (value.startsWith('http://') || value.startsWith('https://')) return value
+  if (value.startsWith('calendly.com/') || value.startsWith('www.calendly.com/')) {
+    return `https://${value}`
+  }
+  return ''
+}
+
+export const CALENDLY_BOOKING_URL = normalizeCalendlyUrl(
+  import.meta.env.VITE_CALENDLY_URL,
+)
 
 const CALENDLY_WIDGET_SRC = 'https://assets.calendly.com/assets/external/widget.js'
 export const CALENDLY_MODAL_EVENT = 'axiom:open-calendly'
@@ -43,15 +53,15 @@ export function getBookingLinkProps(fallbackHash = '/#contact') {
   const href = getBookingHref(fallbackHash)
   const external = href.startsWith('http')
   const onClick = external
-    ? (e) => {
-        e.preventDefault()
-        openCalendlyBooking(href)
+    ? () => {
+        // Reliable on production domains: keep analytics, open Calendly directly.
+        trackEvent(CALENDLY_TRACK_EVENT_CLICK, { source: 'cta', mode: 'direct_link' })
       }
     : undefined
 
   return {
     href,
     onClick,
-    ...(external ? { rel: 'noopener noreferrer' } : {}),
+    ...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {}),
   }
 }
